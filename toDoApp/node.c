@@ -7,7 +7,6 @@ Node *createNode(char data[])
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
     newNode->data = malloc(strlen(data) + 1);
-    newNode->nodeSize = 1;
     strcpy(newNode->data, data);
     newNode->next = NULL;
     newNode->isCompleted = 0;
@@ -19,7 +18,6 @@ Node *insertAtBeg(Node *head, char data[])
 {
     Node *newNode = createNode(data);
     newNode->next = head;
-    newNode->nodeSize += 1;
 
     return newNode;
 }
@@ -34,7 +32,6 @@ Node *insertAtEnd(Node *head, char data[])
     }
 
     elt->next = newNode;
-    head->nodeSize += 1;
 
     return head;
 }
@@ -66,14 +63,13 @@ Node *insert(Node *head, char data[], int index)
 
     newNode->next = elt->next;
     elt->next = newNode;
-    head->nodeSize += 1;
 
     return head;
 }
 
 Node *delete(Node *head, int index)
 {
-    if (head->nodeSize == 1)
+    if (nodeSize(head) == 1)
     {
         return NULL;
     }
@@ -87,9 +83,34 @@ Node *delete(Node *head, int index)
     Node *start = node;
     Node *end = node->next->next;
     start->next = end;
-    head->nodeSize -= 1;
 
     return head;
+}
+
+int nodeSize(Node *head)
+{
+    int size = 0;
+    Node *node = head;
+    while (node != NULL)
+    {
+        size += 1;
+        node = node->next;
+    }
+    return size;
+}
+
+char *nodeData(Node *head, int index)
+{
+    Node *node = head;
+    int size = nodeSize(head);
+    if (index <= size)
+    {
+        for (int i = 1; index < size; i++)
+        {
+            node = node->next;
+        }
+    }
+    return node->data;
 }
 
 void printList(Node *node)
@@ -104,7 +125,7 @@ void printList(Node *node)
         }
         else
         {
-            printf("%d\t%s\tIncomplete\n", i, node->data);
+            printf("%d\t%s\tIncomplete\t\n", i, node->data);
         }
         node = node->next;
         i++;

@@ -5,7 +5,6 @@ typedef struct Node
 {
     char *data;
     int isCompleted;
-    int nodeSize;
     struct Node *next;
 } Node;
 
@@ -18,6 +17,10 @@ Node *insertAtEnd(Node *head, char data[]);
 Node *insert(Node *head, char data[], int index);
 
 Node *delete(Node *head, int index);
+
+int nodeSize(Node *head);
+
+char *nodeData(Node *head, int index);
 
 void printList(Node *node);
 
